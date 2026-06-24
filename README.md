@@ -1,6 +1,6 @@
 # auth.pior.ca
 
-Private household SSO provider for two users. This is a standalone service; FinLens, HouseBot, and ApplyBot talk to it only over OAuth 2.1 / OIDC.
+Private household SSO provider for two users. This is a standalone service using OAuth 2.1 / OIDC.
 
 ## Stack
 
@@ -14,7 +14,6 @@ Private household SSO provider for two users. This is a standalone service; FinL
 - `api/`: Hono entrypoint, Better Auth config, Drizzle schema/migration, seed/reset scripts
 - `web/`: single login page SPA
 - `docker-compose.yml`: API container joined to the shared external Docker network
-- `Caddyfile.snippet`: Caddy routing for API/OIDC endpoints and static SPA assets
 
 ## Better Auth OAuth Provider
 
@@ -24,7 +23,7 @@ The provider is configured with:
 
 - `loginPage: "/sign-in"`, served by the SPA fallback
 - scopes: `openid`, `profile`, `email`, `offline_access`
-- trusted clients cached by ID: `finlens`, `housebot`, `applybot`
+- trusted clients cached by ID: `finlens`
 - no consent prompt for those trusted clients via seeded `skipConsent: true`
 - generous central sessions and refresh tokens, controlled by env
 
@@ -61,14 +60,6 @@ Seed command:
 pnpm db:seed
 ```
 
-Client IDs and placeholder redirect URIs:
-
-- `finlens`: `https://finlens.pior.ca/callback`
-- `housebot`: `https://housebot.pior.ca/callback`
-- `applybot`: `https://applybot.pior.ca/callback`
-
-All three are confidential web clients with PKCE required, `authorization_code` and `refresh_token` grants, and consent skipped.
-
 ## Reset Password
 
 There is no public forgot-password or email reset flow. Run the server-side script instead:
@@ -88,13 +79,3 @@ No signup UI, password reset UI, email sending, social login, MFA, admin UI, org
 ## `prompt=login`
 
 The API intercepts `/api/auth/oauth2/authorize?prompt=login`, clears the central session cookie, and redirects back to the same authorize request with a marker. That forces the OAuth Provider plugin to send the browser to `/sign-in` even if a central session existed.
-
-## Caddy
-
-Use `Caddyfile.snippet` as the basis for `auth.pior.ca`. It proxies `/api/auth/*`, `/.well-known/*`, and `/health` to the API container and serves the SPA from `/srv/auth/web/dist` with an `index.html` fallback.
-
-## Private Threat Model
-
-This service is intended to be reachable only on the LAN and through Tailscale. The network boundary is the primary security layer. Better Auth's built-in security primitives are left at sane defaults, but this intentionally avoids public-internet hardening such as CAPTCHA, MFA, account lockout flows, and aggressive rate limiting.
-
-If this is ever exposed publicly, revisit session lifetimes, rate limiting, abuse protection, audit logging, password policy, and MFA before doing so.
