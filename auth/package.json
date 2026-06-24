@@ -1,0 +1,17 @@
+{
+  "name": "auth",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.8.1",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @auth/api --filter @auth/web dev",
+    "dev:api": "pnpm --filter @auth/api dev",
+    "dev:web": "pnpm --filter @auth/web dev",
+    "build": "pnpm --recursive build",
+    "typecheck": "pnpm --recursive typecheck",
+    "db:generate": "pnpm --filter @auth/api db:generate",
+    "db:migrate": "pnpm --filter @auth/api db:migrate",
+    "db:seed": "pnpm --filter @auth/api db:seed",
+    "reset-password": "pnpm --filter @auth/api reset-password"
+  }
+}

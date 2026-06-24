@@ -1,0 +1,21 @@
+auth.pior.ca {
+  encode zstd gzip
+
+  handle /api/auth/* {
+    reverse_proxy auth-api:3000
+  }
+
+  handle /.well-known/* {
+    reverse_proxy auth-api:3000
+  }
+
+  handle /health {
+    reverse_proxy auth-api:3000
+  }
+
+  handle {
+    root * /srv/auth/web/dist
+    try_files {path} /index.html
+    file_server
+  }
+}
