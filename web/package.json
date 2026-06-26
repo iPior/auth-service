@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@better-auth/oauth-provider": "latest",
+    "@ipior/custom-tailwind-shadcn-themes": "github:iPior/custom-tailwind-shadcn-themes#pkg",
     "@radix-ui/react-slot": "latest",
     "@tailwindcss/vite": "latest",
     "@vitejs/plugin-react": "latest",
