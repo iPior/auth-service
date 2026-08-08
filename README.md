@@ -58,7 +58,7 @@ where `<issuer>` is `<BETTER_AUTH_URL>/api/auth`. The document advertises these 
 - `jwks_uri`: `/jwks` (ID tokens are signed with EdDSA; clients verify against this key set)
 - `end_session_endpoint`: `/oauth2/end-session`
 
-In production the issuer is `https://auth.ts.szarans.ca/api/auth`. Platform Caddy routes `/api/auth/*` and `/.well-known/*` to the Auth API and serves the web container for `/sign-in`.
+In production the issuer is `https://auth.szarans.ca/api/auth`. Platform Caddy routes `/api/auth/*` and `/.well-known/*` to the Auth API and serves the web container for `/sign-in`. The same hostname is used whether a client reaches the server over Tailscale split DNS or the public path.
 
 ## Local verification (localhost)
 
@@ -88,15 +88,15 @@ Every app that uses this SSO provider must be registered as a trusted OAuth clie
      myappClientSecret: requiredEnv("MYAPP_CLIENT_SECRET", "change-me-myapp"),
      ```
 
-2. **Add the client to `api/src/oauth-clients.ts`.** Give it a stable `clientId`, its production `uri`, and the *exact* allowed callback URLs. For a Better Auth client app the callback path is `/api/auth/oauth2/callback/<provider-id>`; include both production and localhost entries so the same client works in local testing:
+2. **Add the client to `api/src/oauth-clients.ts`.** Give it a stable `clientId`, its canonical production `uri`, and the *exact* allowed callback URLs. For a Better Auth client app the callback path is `/api/auth/oauth2/callback/<provider-id>`; include the canonical production hostname and localhost so the same client works in local testing:
    ```ts
    {
      clientId: "myapp",
      clientSecret: env.myappClientSecret,
      name: "MyApp",
-     uri: "https://myapp.pior.ca",
+     uri: "https://myapp.szarans.ca",
      redirectUris: [
-       "https://myapp.pior.ca/api/auth/oauth2/callback/auth-pior",
+       "https://myapp.szarans.ca/api/auth/oauth2/callback/auth-pior",
        "http://localhost:3001/api/auth/oauth2/callback/auth-pior",
      ],
    },
