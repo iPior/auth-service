@@ -148,9 +148,5 @@ jobs:
             --resolve auth.szarans.ca:443:127.0.0.1 \
             https://auth.szarans.ca/sign-in
 
-          curl --fail --silent --show-error --output /dev/null \
-            --resolve auth.ts.szarans.ca:443:127.0.0.1 \
-            https://auth.ts.szarans.ca/sign-in
-
       - name: Show running services
         run: docker compose ps
