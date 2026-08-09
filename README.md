@@ -58,7 +58,7 @@ where `<issuer>` is `<BETTER_AUTH_URL>/api/auth`. The document advertises these 
 - `jwks_uri`: `/jwks` (ID tokens are signed with EdDSA; clients verify against this key set)
 - `end_session_endpoint`: `/oauth2/end-session`
 
-In production the issuer is `https://auth.szarans.ca/api/auth`. Platform Caddy routes `/api/auth/*` and `/.well-known/*` to the Auth API and serves the web container for `/sign-in`. The same hostname is used whether a client reaches the server over Tailscale split DNS or the public path.
+In production the issuer is `https://auth.szarans.ca/api/auth`. Platform Caddy routes `/api/auth/*` and `/.well-known/*` to the Auth API and serves the web container for `/sign-in`. The same `auth.szarans.ca` hostname is used on the trusted local network and over Tailscale; split-horizon DNS resolves it to the appropriate private address for each access path.
 
 ## Local verification (localhost)
 
