@@ -27,8 +27,8 @@ The production application environment. It must include, at minimum:
 API_PORT=3000
 NODE_ENV=production
 BETTER_AUTH_SECRET=<long-random-secret>
-BETTER_AUTH_URL=https://auth.ts.szarans.ca
-WEB_ORIGIN=https://auth.ts.szarans.ca
+BETTER_AUTH_URL=https://auth.szarans.ca
+WEB_ORIGIN=https://auth.szarans.ca
 VITE_AUTH_BASE_URL=
 FINLENS_CLIENT_SECRET=<shared-finlens-client-secret>
 SEED_USER_1_EMAIL=<email>
@@ -41,12 +41,11 @@ SEED_USER_2_PASSWORD=<password>
 
 Do not store `DATABASE_URL`, a database password, or `POSTGRES_ADMIN_URL` in GitHub. The workflows remove legacy database entries from the rendered `.env` before deployment.
 
-Leaving `VITE_AUTH_BASE_URL` blank makes the SPA use whichever Auth origin served it. The canonical OAuth issuer is `https://auth.ts.szarans.ca/api/auth`.
+Leaving `VITE_AUTH_BASE_URL` blank makes the SPA use whichever Auth origin served it. The canonical OAuth issuer is `https://auth.szarans.ca/api/auth`.
 
-The seeded FinLens client accepts these production callback URLs:
+The seeded FinLens client accepts this production callback URL:
 
 ```text
-https://finance.ts.szarans.ca/api/auth/oauth2/callback/auth-pior
 https://finance.szarans.ca/api/auth/oauth2/callback/auth-pior
 ```
 
@@ -71,6 +70,18 @@ The workflow writes these values and the production Compose override into `/opt/
 - attaches the API to `pior_data`
 
 The API accepts either `DATABASE_URL` or `DATABASE_URL_FILE`; direct values remain useful locally, while production uses the mounted file.
+
+## Canonical hostname and routing
+
+Auth has one production application identity: `auth.szarans.ca`. That hostname is used for the Better Auth base URL, OAuth/OIDC issuer, browser origin, client discovery, and documentation.
+
+Routing is selected below the application layer:
+
+- Tailscale-connected clients use platform split DNS and resolve `auth.szarans.ca` directly to the OptiPlex Tailscale address.
+- Other clients resolve the same hostname through public DNS.
+- Containers on `pior_edge` resolve `auth.szarans.ca` to the platform Caddy container through Docker DNS.
+
+Applications must not use a separate Tailscale-specific hostname for OAuth or OIDC identity.
 
 ## Bootstrap Auth Production
 
@@ -101,10 +112,10 @@ The workflow:
 4. builds the API and web images
 5. applies database migrations
 6. recreates the Auth services
-7. waits for `http://127.0.0.1:3000/health`
-8. verifies `/health` and `/sign-in` through the containerized platform Caddy listener on `127.0.0.1:8088`
+7. waits for the API health check inside the container
+8. verifies `/health` and `/sign-in` through production Caddy at `https://auth.szarans.ca`
 
-Deployment remains manual during the platform migration. After repeated successful deployments and the final Caddy cutover, a follow-up change can add a `push` trigger for `main`.
+Deployment remains manual through `workflow_dispatch`.
 
 ## Runner requirements
 

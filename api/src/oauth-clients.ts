@@ -5,12 +5,11 @@ export const oauthClients = [
     clientId: "finlens",
     clientSecret: env.finlensClientSecret,
     name: "FinLens",
-    uri: "https://finance.ts.szarans.ca",
-    // The Tailscale hostname is the canonical self-host origin. The plain
-    // hostname remains registered for LAN access, and localhost supports local
+    uri: "https://finance.szarans.ca",
+    // Production uses one canonical hostname regardless of whether the client
+    // reaches Finance through Tailscale or the public path. Localhost supports
     // development against the same OAuth client.
     redirectUris: [
-      "https://finance.ts.szarans.ca/api/auth/oauth2/callback/auth-pior",
       "https://finance.szarans.ca/api/auth/oauth2/callback/auth-pior",
       "http://localhost:5174/api/auth/oauth2/callback/auth-pior",
     ],
