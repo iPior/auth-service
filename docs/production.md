@@ -31,6 +31,7 @@ BETTER_AUTH_URL=https://auth.szarans.ca
 WEB_ORIGIN=https://auth.szarans.ca
 VITE_AUTH_BASE_URL=
 FINLENS_CLIENT_SECRET=<shared-finlens-client-secret>
+COOKBOOK_CLIENT_SECRET=<shared-cookbook-client-secret>
 SEED_USER_1_EMAIL=<email>
 SEED_USER_1_NAME=<name>
 SEED_USER_1_PASSWORD=<password>
@@ -50,6 +51,14 @@ https://finance.szarans.ca/api/auth/oauth2/callback/auth-pior
 ```
 
 The exact `FINLENS_CLIENT_SECRET` value must also be configured in the Finance production environment.
+
+The seeded Cookbook client accepts this production callback URL:
+
+```text
+https://cookbook.szarans.ca/api/auth/oauth2/callback/auth-pior
+```
+
+The exact `COOKBOOK_CLIENT_SECRET` value must also be configured in the Cookbook production environment.
 
 ## Optional production variables
 

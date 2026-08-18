@@ -14,6 +14,16 @@ export const oauthClients = [
       "http://localhost:5174/api/auth/oauth2/callback/auth-pior",
     ],
   },
+  {
+    clientId: "cookbook",
+    clientSecret: env.cookbookClientSecret,
+    name: "Cookbook",
+    uri: "https://cookbook.szarans.ca",
+    redirectUris: [
+      "https://cookbook.szarans.ca/api/auth/oauth2/callback/auth-pior",
+      "http://localhost:5175/api/auth/oauth2/callback/auth-pior",
+    ],
+  },
 ] as const;
 
 export const trustedClientIds = new Set(oauthClients.map((client) => client.clientId));

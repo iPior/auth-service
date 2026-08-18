@@ -25,7 +25,7 @@ The provider is configured with:
 
 - `loginPage: "/sign-in"`, served by the SPA fallback
 - scopes: `openid`, `profile`, `email`, `offline_access`
-- trusted clients cached by ID: `finlens` (the only registered client today)
+- trusted clients cached by ID: `finlens` and `cookbook`
 - no consent prompt for those trusted clients via seeded `skipConsent: true`
 - generous central sessions and refresh tokens, controlled by env
 
@@ -121,6 +121,7 @@ Required user env:
 Required OAuth client env (one per registered client):
 
 - `FINLENS_CLIENT_SECRET`
+- `COOKBOOK_CLIENT_SECRET`
 
 Seed command:
 
