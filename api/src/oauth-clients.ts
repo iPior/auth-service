@@ -11,7 +11,7 @@ export const oauthClients = [
     // development against the same OAuth client.
     redirectUris: [
       "https://finance.szarans.ca/api/auth/oauth2/callback/auth-pior",
-      "http://localhost:5174/api/auth/oauth2/callback/auth-pior",
+      "http://localhost:5173/api/auth/oauth2/callback/auth-pior",
     ],
   },
   {
