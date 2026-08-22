@@ -21,7 +21,7 @@ export const oauthClients = [
     uri: "https://cookbook.szarans.ca",
     redirectUris: [
       "https://cookbook.szarans.ca/api/auth/oauth2/callback/auth-pior",
-      "http://localhost:5175/api/auth/oauth2/callback/auth-pior",
+      "http://localhost:5173/api/auth/oauth2/callback/auth-pior",
     ],
   },
 ] as const;
